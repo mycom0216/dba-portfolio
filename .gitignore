@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+
+# 실행 로그 (로컬 경로가 들어 있어 올리지 않는다)
+*.log
+*.err
+
+# 내려받은 DB 바이너리와 데이터 디렉터리는 %LOCALAPPDATA%\dba-lab 에 있고 저장소 밖이지만, 실수로 복사돼도 올라가지 않게 막는다
+*.zip
+pgdata/
+pgstandby/
+mydata/

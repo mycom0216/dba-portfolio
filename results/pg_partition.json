@@ -1,0 +1,82 @@
+{
+ "load_ms": {
+  "비분할": 1862,
+  "파티션": 2118
+ },
+ "rows": {
+  "비분할": 1000000,
+  "파티션": 1000000
+ },
+ "partition_rows": {
+  "donations_p_2026_01": 102968,
+  "donations_p_2026_02": 93639,
+  "donations_p_2026_03": 103190,
+  "donations_p_2026_04": 100203,
+  "donations_p_2026_05": 103119,
+  "donations_p_2026_06": 100213,
+  "donations_p_2026_07": 103456,
+  "donations_p_2026_08": 103033,
+  "donations_p_2026_09": 100186,
+  "donations_p_2026_10": 89993
+ },
+ "no_index": {
+  "비분할": {
+   "Q1 최근 7일 후원 합계 상위 방송": {
+    "ms": 65.62,
+    "partitions_scanned": 0
+   },
+   "Q6 6월 한 달 건수·합계": {
+    "ms": 61.13,
+    "partitions_scanned": 0
+   }
+  },
+  "파티션": {
+   "Q1 최근 7일 후원 합계 상위 방송": {
+    "ms": 15.74,
+    "partitions_scanned": 1
+   },
+   "Q6 6월 한 달 건수·합계": {
+    "ms": 13.86,
+    "partitions_scanned": 1
+   }
+  }
+ },
+ "index_build_ms": {
+  "비분할": 463,
+  "파티션": 581
+ },
+ "with_index": {
+  "비분할": {
+   "Q1 최근 7일 후원 합계 상위 방송": {
+    "ms": 7.84,
+    "partitions_scanned": 0
+   },
+   "Q6 6월 한 달 건수·합계": {
+    "ms": 10.69,
+    "partitions_scanned": 0
+   }
+  },
+  "파티션": {
+   "Q1 최근 7일 후원 합계 상위 방송": {
+    "ms": 7.58,
+    "partitions_scanned": 1
+   },
+   "Q6 6월 한 달 건수·합계": {
+    "ms": 14.04,
+    "partitions_scanned": 1
+   }
+  }
+ },
+ "purge": {
+  "rows_removed": 196607,
+  "DELETE_ms": 165,
+  "dead_tuples_after_delete": 196607,
+  "size_after_delete(공간 회수 전)": "125 MB",
+  "VACUUM_ms": 435,
+  "DETACH_DROP_ms": 163,
+  "rows_left": {
+   "비분할": 803393,
+   "파티션": 803393
+  }
+ }
+}

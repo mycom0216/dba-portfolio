@@ -1,0 +1,89 @@
+{
+ "Q1": {
+  "ms": 6.98,
+  "min": 6.81,
+  "max": 8.64,
+  "scans": [
+   "Index Only Scan[idx_donations_created] on donations"
+  ],
+  "buffers": 121,
+  "result": "1423|10000\n23|7340\n1660|6200\n43|6080\n220|6080\n662|6020\n155|6010\n251|6000\n675|6000\n2022|6000",
+  "plan": "Limit  (cost=1722.32..1722.34 rows=10 width=16) (actual time=8.172..8.174 rows=10 loops=1)\n  Buffers: shared hit=121\n  ->  Sort  (cost=1722.32..1773.39 rows=20431 width=16) (actual time=8.169..8.170 rows=10 loops=1)\n        Sort Key: (sum(points)) DESC, broadcast_id\n        Sort Method: top-N heapsort  Memory: 25kB\n        Buffers: shared hit=121\n        ->  HashAggregate  (cost=1076.50..1280.81 rows=20431 width=16) (actual time=5.327..6.998 rows=19476 loops=1)\n              Group Key: broadcast_id\n              Batches: 1  Memory Usage: 2833kB\n              Buffers: shared hit=118\n              ->  Index Only Scan using idx_donations_created on donations  (cost=0.42..956.48 rows=24003 width=12) (actual time=0.147..2.020 rows=23157 loops=1)\n                    Index Cond: ((created_at >= '2026-10-01 00:00:00+00'::timestamp with time zone) AND (created_at < '2026-10-08 00:00:00+00'::timestamp with time zone))\n                    Heap Fetches: 0\n                    Buffers: shared hit=118\nPlanning:\n  Buffers: shared hit=140\nPlanning Time: 3.746 ms\nExecution Time: 8.641 ms\n",
+  "desc": "최근 7일 후원 합계 상위 방송 (범위 조건 + 집계)"
+ },
+ "Q2": {
+  "ms": 0.21,
+  "min": 0.2,
+  "max": 0.21,
+  "scans": [
+   "Bitmap Heap Scan on listens",
+   "Bitmap Index Scan on idx_listens_user_joined"
+  ],
+  "buffers": 28,
+  "result": "1172951|6944|2026-09-23 21:41:31.070008+00\n144266|89490|2026-09-12 19:10:35.113673+00\n104516|6788|2026-08-30 01:48:21.028869+00\n2919059|9881|2026-08-30 00:45:10.683035+00\n350232|28127|2026-08-29 03:22:26.963427+00\n2853305|31748|2026-07-31 03:09:35.604354+00\n2239295|8043|2026-07-15 23:08:47.05243+00\n1992979|4943|2026-06-12 22:45:46.788216+00\n2864770|16025|2026-06-08 09:17:19.688096+00\n700274|11899|2026-05-24 17:04:46.74415+00\n2657447|50271|2026-05-22 14:51:17.717548+00\n1886265|98634|2026-05-06 23:55:35.093201+00\n1792592|32123|2026-04-21 05:17:15.3286+00\n1455180|17682|2026-04-06 00:28:49.849026+00\n116967|45213|2026-03-25 07:58:56.822153+00\n2079536|1082|2026-03-12 14:48:48.718158+00\n1499242|89440|2026-03-06 02:17:17.144492+00\n472083|24782|2026-02-14 08:09:40.1884+00\n2658221|12558|2026-02-02 00:43:50.856529+00",
+  "plan": "Limit  (cost=67.86..67.90 rows=16 width=24) (actual time=0.146..0.148 rows=19 loops=1)\n  Buffers: shared hit=28\n  ->  Sort  (cost=67.86..67.90 rows=16 width=24) (actual time=0.144..0.144 rows=19 loops=1)\n        Sort Key: joined_at DESC\n        Sort Method: quicksort  Memory: 26kB\n        Buffers: shared hit=28\n        ->  Bitmap Heap Scan on listens  (cost=4.55..67.54 rows=16 width=24) (actual time=0.033..0.124 rows=19 loops=1)\n              Recheck Cond: (user_id = 12345)\n              Heap Blocks: exact=19\n              Buffers: shared hit=25\n              ->  Bitmap Index Scan on idx_listens_user_joined  (cost=0.00..4.55 rows=16 width=0) (actual time=0.022..0.022 rows=19 loops=1)\n                    Index Cond: (user_id = 12345)\n                    Buffers: shared hit=6\nPlanning:\n  Buffers: shared hit=121\nPlanning Time: 2.014 ms\nExecution Time: 0.211 ms\n",
+  "desc": "유저의 최근 청취 이력 20건 (필터 + 정렬 + LIMIT)"
+ },
+ "Q3": {
+  "ms": 0.19,
+  "min": 0.17,
+  "max": 0.28,
+  "scans": [
+   "Index Only Scan[idx_listens_live] on listens"
+  ],
+  "buffers": 6,
+  "result": "4",
+  "plan": "Aggregate  (cost=4.34..4.35 rows=1 width=8) (actual time=0.099..0.099 rows=1 loops=1)\n  Buffers: shared hit=6\n  ->  Index Only Scan using idx_listens_live on listens  (cost=0.28..4.33 rows=3 width=0) (actual time=0.087..0.089 rows=4 loops=1)\n        Index Cond: (broadcast_id = 1)\n        Heap Fetches: 0\n        Buffers: shared hit=6\nPlanning:\n  Buffers: shared hit=102\nPlanning Time: 2.192 ms\nExecution Time: 0.175 ms\n",
+  "desc": "특정 방송의 현재 청취자 수 (NULL 조건, 선택도가 매우 낮음)"
+ },
+ "Q4": {
+  "ms": 86.18,
+  "min": 80.28,
+  "max": 87.23,
+  "scans": [
+   "Seq Scan on donations"
+  ],
+  "buffers": 8334,
+  "result": "3382",
+  "plan": "Finalize Aggregate  (cost=15589.42..15589.43 rows=1 width=8) (actual time=81.224..86.083 rows=1 loops=1)\n  Buffers: shared hit=8334\n  ->  Gather  (cost=15589.21..15589.42 rows=2 width=8) (actual time=81.076..86.077 rows=3 loops=1)\n        Workers Planned: 2\n        Workers Launched: 2\n        Buffers: shared hit=8334\n        ->  Partial Aggregate  (cost=14589.21..14589.22 rows=1 width=8) (actual time=53.413..53.413 rows=1 loops=3)\n              Buffers: shared hit=8334\n              ->  Parallel Seq Scan on donations  (cost=0.00..14584.00 rows=2083 width=0) (actual time=0.083..53.337 rows=1127 loops=3)\n                    Filter: (date_trunc('day'::text, created_at) = '2026-10-05 00:00:00+00'::timestamp with time zone)\n                    Rows Removed by Filter: 332206\n                    Buffers: shared hit=8334\nPlanning:\n  Buffers: shared hit=109\nPlanning Time: 2.614 ms\nExecution Time: 86.184 ms\n",
+  "desc": "하루치 후원 건수 - 컬럼을 함수로 감싼 조건 (non-sargable)"
+ },
+ "Q5": {
+  "ms": 32.8,
+  "min": 32.61,
+  "max": 37.19,
+  "scans": [
+   "Seq Scan on users",
+   "Index Only Scan[idx_donations_broadcast] on donations"
+  ],
+  "buffers": 2296,
+  "result": "user_7e230522657ecdc50e4249581b861f8e|5000\nuser_d7e4cdde82a894b8f633e6d61a01ef15|5000\nuser_56f9b1360d583668d28db999db7decbb|5000\nuser_3b847a075d85556882ccb050e82ab665|5000\nuser_50ae0ce8c27842532dcd83c3678302bc|5000\nuser_97e166ec18b6d2e57c0a4ff98b919891|5000\nuser_c5677f71b1968b865a1570e182b7a18e|5000\nuser_518fca47d7abd2ff7ff736fd407d5ae9|5000\nuser_bf915dbefad769c34545cf288237bbb3|5000\nuser_d8cca0e2e9a91d7a54349b03f0532772|5000",
+  "plan": "Limit  (cost=5915.98..5916.00 rows=10 width=54) (actual time=29.677..32.480 rows=10 loops=1)\n  Buffers: shared hit=2296\n  ->  Sort  (cost=5915.98..5919.64 rows=1467 width=54) (actual time=29.674..32.477 rows=10 loops=1)\n        Sort Key: (sum(d.points)) DESC, u.user_id\n        Sort Method: top-N heapsort  Memory: 26kB\n        Buffers: shared hit=2296\n        ->  Finalize GroupAggregate  (cost=5753.10..5884.28 rows=1467 width=54) (actual time=28.771..32.328 rows=1716 loops=1)\n              Group Key: u.user_id\n              Buffers: shared hit=2296\n              ->  Gather Merge  (cost=5753.10..5865.29 rows=863 width=54) (actual time=28.762..32.021 rows=1716 loops=1)\n                    Workers Planned: 1\n                    Workers Launched: 1\n                    Buffers: shared hit=2296\n                    ->  Partial GroupAggregate  (cost=4753.09..4768.19 rows=863 width=54) (actual time=11.608..11.799 rows=858 loops=2)\n                          Group Key: u.user_id\n                          Buffers: shared hit=2296\n                          ->  Sort  (cost=4753.09..4755.25 rows=863 width=50) (actual time=11.602..11.632 rows=862 loops=2)\n                                Sort Key: u.user_id\n                                Sort Method: quicksort  Memory: 183kB\n                                Buffers: shared hit=2296\n                                Worker 0:  Sort Method: quicksort  Memory: 25kB\n                                ->  Hash Join  (cost=76.44..4711.01 rows=863 width=50) (actual time=0.189..11.481 rows=862 loops=2)\n                                      Hash Cond: (u.user_id = d.sender_id)\n                                      Buffers: shared hit=2288\n                                      ->  Parallel Seq Scan on users u  (cost=0.00..3449.47 rows=117647 width=46) (actual time=0.004..4.674 rows=100000 loops=2)\n                                            Buffers: shared hit=2273\n                                      ->  Hash  (cost=58.10..58.10 rows=1467 width=12) (actual time=0.347..0.349 rows=1723 loops=1)\n                                            Buckets: 2048  Batches: 1  Memory Usage: 97kB\n                                            Buffers: shared hit=15\n                                            ->  Index Only Scan using idx_donations_broadcast on donations d  (cost=0.42..58.10 rows=1467 width=12) (actual time=0.123..0.238 rows=1723 loops=1)\n                                                  Index Cond: (broadcast_id = 1)\n                                                  Heap Fetches: 0\n                                                  Buffers: shared hit=15\nPlanning:\n  Buffers: shared hit=212\nPlanning Time: 2.948 ms\nExecution Time: 32.610 ms\n",
+  "desc": "방송의 후원 상위 유저 10명 + 닉네임 (JOIN + 집계)"
+ },
+ "Q4r": {
+  "ms": 0.51,
+  "min": 0.48,
+  "max": 0.6,
+  "scans": [
+   "Index Only Scan[idx_donations_created] on donations"
+  ],
+  "buffers": 20,
+  "result": "3382",
+  "plan": "Aggregate  (cost=152.32..152.33 rows=1 width=8) (actual time=0.415..0.416 rows=1 loops=1)\n  Buffers: shared hit=20\n  ->  Index Only Scan using idx_donations_created on donations  (cost=0.42..143.44 rows=3551 width=0) (actual time=0.091..0.308 rows=3382 loops=1)\n        Index Cond: ((created_at >= '2026-10-05 00:00:00+00'::timestamp with time zone) AND (created_at < '2026-10-06 00:00:00+00'::timestamp with time zone))\n        Heap Fetches: 0\n        Buffers: shared hit=20\nPlanning:\n  Buffers: shared hit=111\nPlanning Time: 2.441 ms\nExecution Time: 0.508 ms\n",
+  "desc": "하루치 후원 건수 - 범위 조건으로 재작성 (sargable)"
+ },
+ "Q5r": {
+  "ms": 0.78,
+  "min": 0.77,
+  "max": 0.81,
+  "scans": [
+   "Index Only Scan[idx_donations_broadcast] on donations",
+   "Index Scan[users_pkey] on users"
+  ],
+  "buffers": 58,
+  "result": "user_7e230522657ecdc50e4249581b861f8e|5000\nuser_d7e4cdde82a894b8f633e6d61a01ef15|5000\nuser_56f9b1360d583668d28db999db7decbb|5000\nuser_3b847a075d85556882ccb050e82ab665|5000\nuser_50ae0ce8c27842532dcd83c3678302bc|5000\nuser_97e166ec18b6d2e57c0a4ff98b919891|5000\nuser_c5677f71b1968b865a1570e182b7a18e|5000\nuser_518fca47d7abd2ff7ff736fd407d5ae9|5000\nuser_bf915dbefad769c34545cf288237bbb3|5000\nuser_d8cca0e2e9a91d7a54349b03f0532772|5000",
+  "plan": "Nested Loop  (cost=112.07..196.15 rows=10 width=54) (actual time=0.639..0.709 rows=10 loops=1)\n  Buffers: shared hit=58\n  ->  Limit  (cost=111.65..111.67 rows=10 width=16) (actual time=0.614..0.615 rows=10 loops=1)\n        Buffers: shared hit=18\n        ->  Sort  (cost=111.65..115.30 rows=1462 width=16) (actual time=0.611..0.612 rows=10 loops=1)\n              Sort Key: (sum(donations.points)) DESC, donations.sender_id\n              Sort Method: top-N heapsort  Memory: 25kB\n              Buffers: shared hit=18\n              ->  HashAggregate  (cost=65.43..80.05 rows=1462 width=16) (actual time=0.418..0.510 rows=1716 loops=1)\n                    Group Key: donations.sender_id\n                    Batches: 1  Memory Usage: 193kB\n                    Buffers: shared hit=15\n                    ->  Index Only Scan using idx_donations_broadcast on donations  (cost=0.42..58.10 rows=1467 width=12) (actual time=0.092..0.202 rows=1723 loops=1)\n                          Index Cond: (broadcast_id = 1)\n                          Heap Fetches: 0\n                          Buffers: shared hit=15\n  ->  Index Scan using users_pkey on users u  (cost=0.42..8.44 rows=1 width=46) (actual time=0.009..0.009 rows=1 loops=10)\n        Index Cond: (user_id = donations.sender_id)\n        Buffers: shared hit=40\nPlanning:\n  Buffers: shared hit=194\nPlanning Time: 3.273 ms\nExecution Time: 0.806 ms\n",
+  "desc": "방송의 후원 상위 유저 10명 - 집계를 먼저 하고 상위 10명에게만 JOIN"
+ }
+}

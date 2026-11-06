@@ -1,0 +1,21 @@
+{
+ "index_build_ms": {
+  "idx_donations_created": 478,
+  "idx_listens_user_joined": 1325,
+  "idx_listens_live": 183,
+  "idx_donations_broadcast": 644
+ },
+ "index_sizes": {
+  "listens_pkey": "64 MB",
+  "donations_pkey": "21 MB",
+  "idx_donations_created": "39 MB",
+  "idx_listens_user_joined": "90 MB",
+  "idx_listens_live": "72 kB",
+  "idx_donations_broadcast": "39 MB"
+ },
+ "write_cost_ms": {
+  "PK만": 573,
+  "PK+인덱스2개": 1622,
+  "rows": 300000
+ }
+}

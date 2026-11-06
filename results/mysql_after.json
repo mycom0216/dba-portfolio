@@ -1,0 +1,89 @@
+{
+ "Q1": {
+  "ms": 40.4,
+  "min": 24.9,
+  "max": 41.0,
+  "scans": [
+   "Covering index range scan[idx_donations_created] on donations"
+  ],
+  "buffers": null,
+  "result": "1423\t10000\n23\t7340\n1660\t6200\n43\t6080\n220\t6080\n662\t6020\n155\t6010\n251\t6000\n675\t6000\n2022\t6000",
+  "plan": "-> Limit: 10 row(s)  (actual time=40.7..40.7 rows=10 loops=1)\n    -> Sort: total_points DESC, donations.broadcast_id, limit input to 10 row(s) per chunk  (actual time=40.7..40.7 rows=10 loops=1)\n        -> Table scan on <temporary>  (actual time=35..37 rows=19476 loops=1)\n            -> Aggregate using temporary table  (actual time=35..35 rows=19476 loops=1)\n                -> Filter: ((donations.created_at >= TIMESTAMP'2026-10-01 00:00:00') and (donations.created_at < TIMESTAMP'2026-10-08 00:00:00'))  (cost=9035 rows=44414) (actual time=0.658..16.8 rows=23157 loops=1)\n                    -> Covering index range scan on donations using idx_donations_created over ('2026-10-01 00:00:00.000000' <= created_at < '2026-10-08 00:00:00.000000')  (cost=9035 rows=44414) (actual time=0.655..10.4 rows=23157 loops=1)\n\n",
+  "desc": "최근 7일 후원 합계 상위 방송 (범위 조건 + 집계)"
+ },
+ "Q2": {
+  "ms": 0.18,
+  "min": 0.09,
+  "max": 0.22,
+  "scans": [
+   "Index lookup[idx_listens_user_joined] on listens"
+  ],
+  "buffers": null,
+  "result": "1172951\t6944\t2026-09-23 21:41:31.070008\n144266\t89490\t2026-09-12 19:10:35.113673\n104516\t6788\t2026-08-30 01:48:21.028869\n2919059\t9881\t2026-08-30 00:45:10.683035\n350232\t28127\t2026-08-29 03:22:26.963427\n2853305\t31748\t2026-07-31 03:09:35.604354\n2239295\t8043\t2026-07-15 23:08:47.052430\n1992979\t4943\t2026-06-12 22:45:46.788216\n2864770\t16025\t2026-06-08 09:17:19.688096\n700274\t11899\t2026-05-24 17:04:46.744150\n2657447\t50271\t2026-05-22 14:51:17.717548\n1886265\t98634\t2026-05-06 23:55:35.093201\n1792592\t32123\t2026-04-21 05:17:15.328600\n1455180\t17682\t2026-04-06 00:28:49.849026\n116967\t45213\t2026-03-25 07:58:56.822153\n2079536\t1082\t2026-03-12 14:48:48.718158\n1499242\t89440\t2026-03-06 02:17:17.144492\n472083\t24782\t2026-02-14 08:09:40.188400\n2658221\t12558\t2026-02-02 00:43:50.856529",
+  "plan": "-> Limit: 20 row(s)  (cost=6.65 rows=19) (actual time=0.206..0.216 rows=19 loops=1)\n    -> Index lookup on listens using idx_listens_user_joined (user_id=12345)  (cost=6.65 rows=19) (actual time=0.204..0.212 rows=19 loops=1)\n\n",
+  "desc": "유저의 최근 청취 이력 20건 (필터 + 정렬 + LIMIT)"
+ },
+ "Q3": {
+  "ms": 0.03,
+  "min": 0.02,
+  "max": 0.04,
+  "scans": [
+   "Covering index lookup[idx_listens_live] on listens"
+  ],
+  "buffers": null,
+  "result": "4",
+  "plan": "-> Aggregate: count(0)  (cost=1.81 rows=1) (actual time=0.0267..0.0267 rows=1 loops=1)\n    -> Filter: (listens.left_at is null)  (cost=1.41 rows=4) (actual time=0.019..0.0233 rows=4 loops=1)\n        -> Covering index lookup on listens using idx_listens_live (broadcast_id=1, left_at=NULL)  (cost=1.41 rows=4) (actual time=0.0182..0.0222 rows=4 loops=1)\n\n",
+  "desc": "특정 방송의 현재 청취자 수 (NULL 조건, 선택도가 매우 낮음)"
+ },
+ "Q4": {
+  "ms": 229.0,
+  "min": 222.0,
+  "max": 240.0,
+  "scans": [
+   "Covering index scan[idx_donations_created] on donations"
+  ],
+  "buffers": null,
+  "result": "3382",
+  "plan": "-> Aggregate: count(0)  (cost=200244 rows=1) (actual time=237..237 rows=1 loops=1)\n    -> Filter: (cast(donations.created_at as date) = '2026-10-05')  (cost=100607 rows=996373) (actual time=214..237 rows=3382 loops=1)\n        -> Covering index scan on donations using idx_donations_created  (cost=100607 rows=996373) (actual time=0.154..161 rows=1e+6 loops=1)\n\n",
+  "desc": "하루치 후원 건수 - 컬럼을 함수로 감싼 조건 (non-sargable)"
+ },
+ "Q5": {
+  "ms": 14.2,
+  "min": 11.5,
+  "max": 14.8,
+  "scans": [
+   "Covering index lookup[idx_donations_broadcast] on d",
+   "Single-row index lookup[PRIMARY] on u"
+  ],
+  "buffers": null,
+  "result": "user_7e230522657ecdc50e4249581b861f8e\t5000\nuser_d7e4cdde82a894b8f633e6d61a01ef15\t5000\nuser_56f9b1360d583668d28db999db7decbb\t5000\nuser_3b847a075d85556882ccb050e82ab665\t5000\nuser_50ae0ce8c27842532dcd83c3678302bc\t5000\nuser_97e166ec18b6d2e57c0a4ff98b919891\t5000\nuser_c5677f71b1968b865a1570e182b7a18e\t5000\nuser_518fca47d7abd2ff7ff736fd407d5ae9\t5000\nuser_bf915dbefad769c34545cf288237bbb3\t5000\nuser_d8cca0e2e9a91d7a54349b03f0532772\t5000",
+  "plan": "-> Limit: 10 row(s)  (actual time=11.5..11.5 rows=10 loops=1)\n    -> Sort: total_points DESC, u.user_id, limit input to 10 row(s) per chunk  (actual time=11.5..11.5 rows=10 loops=1)\n        -> Table scan on <temporary>  (actual time=10.9..11.1 rows=1716 loops=1)\n            -> Aggregate using temporary table  (actual time=10.9..10.9 rows=1716 loops=1)\n                -> Nested loop inner join  (cost=782 rows=1723) (actual time=0.068..7.22 rows=1723 loops=1)\n                    -> Covering index lookup on d using idx_donations_broadcast (broadcast_id=1)  (cost=179 rows=1723) (actual time=0.0532..0.807 rows=1723 loops=1)\n                    -> Single-row index lookup on u using PRIMARY (user_id=d.sender_id)  (cost=0.25 rows=1) (actual time=0.00348..0.00351 rows=1 loops=1723)\n\n",
+  "desc": "방송의 후원 상위 유저 10명 + 닉네임 (JOIN + 집계)"
+ },
+ "Q4r": {
+  "ms": 1.91,
+  "min": 1.19,
+  "max": 2.5,
+  "scans": [
+   "Covering index range scan[idx_donations_created] on donations"
+  ],
+  "buffers": null,
+  "result": "3382",
+  "plan": "-> Aggregate: count(0)  (cost=1027 rows=1) (actual time=2.5..2.5 rows=1 loops=1)\n    -> Filter: ((donations.created_at >= TIMESTAMP'2026-10-05 00:00:00') and (donations.created_at < TIMESTAMP'2026-10-06 00:00:00'))  (cost=689 rows=3382) (actual time=0.103..2.25 rows=3382 loops=1)\n        -> Covering index range scan on donations using idx_donations_created over ('2026-10-05 00:00:00.000000' <= created_at < '2026-10-06 00:00:00.000000')  (cost=689 rows=3382) (actual time=0.1..1.46 rows=3382 loops=1)\n\n",
+  "desc": "하루치 후원 건수 - 범위 조건으로 재작성 (sargable)"
+ },
+ "Q5r": {
+  "ms": 2.65,
+  "min": 0.86,
+  "max": 3.55,
+  "scans": [
+   "Table scan on t",
+   "Covering index lookup[idx_donations_broadcast] on donations",
+   "Single-row index lookup[PRIMARY] on u"
+  ],
+  "buffers": null,
+  "result": "user_7e230522657ecdc50e4249581b861f8e\t5000\nuser_d7e4cdde82a894b8f633e6d61a01ef15\t5000\nuser_56f9b1360d583668d28db999db7decbb\t5000\nuser_3b847a075d85556882ccb050e82ab665\t5000\nuser_50ae0ce8c27842532dcd83c3678302bc\t5000\nuser_97e166ec18b6d2e57c0a4ff98b919891\t5000\nuser_c5677f71b1968b865a1570e182b7a18e\t5000\nuser_518fca47d7abd2ff7ff736fd407d5ae9\t5000\nuser_bf915dbefad769c34545cf288237bbb3\t5000\nuser_d8cca0e2e9a91d7a54349b03f0532772\t5000",
+  "plan": "-> Nested loop inner join  (cost=5.1 rows=0) (actual time=3.44..3.51 rows=10 loops=1)\n    -> Sort: t.total_points DESC, t.sender_id  (cost=2.6..2.6 rows=0) (actual time=3.42..3.42 rows=10 loops=1)\n        -> Table scan on t  (cost=2.5..2.5 rows=0) (actual time=3.39..3.4 rows=10 loops=1)\n            -> Materialize  (cost=0..0 rows=0) (actual time=3.39..3.39 rows=10 loops=1)\n                -> Limit: 10 row(s)  (actual time=3.34..3.34 rows=10 loops=1)\n                    -> Sort: total_points DESC, donations.sender_id, limit input to 10 row(s) per chunk  (actual time=3.34..3.34 rows=10 loops=1)\n                        -> Stream results  (cost=351 rows=1723) (actual time=0.104..2.67 rows=1716 loops=1)\n                            -> Group aggregate: sum(donations.points)  (cost=351 rows=1723) (actual time=0.0989..1.86 rows=1716 loops=1)\n                                -> Covering index lookup on donations using idx_donations_broadcast (broadcast_id=1)  (cost=179 rows=1723) (actual time=0.09..1.1 rows=1723 loops=1)\n    -> Single-row index lookup on u using PRIMARY (user_id=t.sender_id)  (cost=0.26 rows=1) (actual time=0.00826..0.00834 rows=1 loops=10)\n\n",
+  "desc": "방송의 후원 상위 유저 10명 - 집계를 먼저 하고 상위 10명에게만 JOIN"
+ }
+}

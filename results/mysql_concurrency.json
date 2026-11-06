@@ -1,0 +1,65 @@
+{
+ "setup": {
+  "clients": 16,
+  "txn_per_client": 500,
+  "hot_wallets": 10,
+  "points_per_txn": 10,
+  "deadlock_clients": 8,
+  "deadlock_txn_per_client": 250,
+  "client": "PyMySQL 스레드"
+ },
+ "deduction": [
+  {
+   "case": "읽고-계산-쓰기 (REPEATABLE READ, InnoDB 기본)",
+   "committed": 8000,
+   "errors": {},
+   "expected_deduction": 80000,
+   "actual_deduction": 38530,
+   "lost_updates": 4147,
+   "tps(참고)": 950
+  },
+  {
+   "case": "읽고-계산-쓰기 (READ COMMITTED)",
+   "committed": 8000,
+   "errors": {},
+   "expected_deduction": 80000,
+   "actual_deduction": 38410,
+   "lost_updates": 4159,
+   "tps(참고)": 944
+  },
+  {
+   "case": "SELECT FOR UPDATE",
+   "committed": 8000,
+   "errors": {},
+   "expected_deduction": 80000,
+   "actual_deduction": 80000,
+   "lost_updates": 0,
+   "tps(참고)": 443
+  },
+  {
+   "case": "원자적 조건부 UPDATE",
+   "committed": 8000,
+   "errors": {},
+   "expected_deduction": 80000,
+   "actual_deduction": 80000,
+   "lost_updates": 0,
+   "tps(참고)": 963
+  }
+ ],
+ "deadlock": [
+  {
+   "case": "차감->증가 (잠금 순서 제각각)",
+   "committed": 1487,
+   "errors(1213=데드락)": {
+    "1213": 513
+   },
+   "total_conserved": true
+  },
+  {
+   "case": "user_id 순으로 먼저 잠금",
+   "committed": 2000,
+   "errors(1213=데드락)": {},
+   "total_conserved": true
+  }
+ ]
+}

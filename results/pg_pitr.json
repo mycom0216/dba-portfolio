@@ -1,0 +1,12 @@
+{
+ "target_time_utc": "2026-11-06 04:50:53.463570",
+ "rows_at_target": 150000,
+ "rows_after_accident": 75000,
+ "rows_restored": 150000,
+ "deleted_even_rows_restored": 75000,
+ "success": true,
+ "basebackup_s": 1.9,
+ "wal_files_archived": 6,
+ "archive_failures": 0,
+ "recovery_start_to_ready_s": 4.4
+}

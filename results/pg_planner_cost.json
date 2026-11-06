@@ -1,0 +1,74 @@
+{
+ "validation1_seq_scan_formula": {
+  "params": {
+   "seq_page_cost": 1.0,
+   "random_page_cost": 4.0,
+   "cpu_tuple_cost": 0.01,
+   "cpu_index_tuple_cost": 0.005,
+   "cpu_operator_cost": 0.0025
+  },
+  "relpages": 8334.0,
+  "reltuples": 1000000.0,
+  "predicted_total_cost": 23334.0,
+  "explain_total_cost": 23334.0,
+  "match_within_1pct": true
+ },
+ "validation2_crossover": [
+  {
+   "days": 1,
+   "est_rows": 1,
+   "chosen_plan": "Index Only Scan",
+   "seq_scan_cost": 25842.02,
+   "index_only_cost": 136.5
+  },
+  {
+   "days": 7,
+   "est_rows": 1,
+   "chosen_plan": "Index Only Scan",
+   "seq_scan_cost": 25891.65,
+   "index_only_cost": 979.22
+  },
+  {
+   "days": 30,
+   "est_rows": 1,
+   "chosen_plan": "Index Only Scan",
+   "seq_scan_cost": 26083.08,
+   "index_only_cost": 4214.07
+  },
+  {
+   "days": 60,
+   "est_rows": 1,
+   "chosen_plan": "Index Only Scan",
+   "seq_scan_cost": 26336.02,
+   "index_only_cost": 8494.55
+  },
+  {
+   "days": 90,
+   "est_rows": 1,
+   "chosen_plan": "Index Only Scan",
+   "seq_scan_cost": 26583.79,
+   "index_only_cost": 12684.48
+  },
+  {
+   "days": 120,
+   "est_rows": 1,
+   "chosen_plan": "Index Only Scan",
+   "seq_scan_cost": 26828.42,
+   "index_only_cost": 16822.15
+  },
+  {
+   "days": 180,
+   "est_rows": 1,
+   "chosen_plan": "Index Only Scan",
+   "seq_scan_cost": 27333.75,
+   "index_only_cost": 25370.07
+  },
+  {
+   "days": 300,
+   "est_rows": 1,
+   "chosen_plan": "Seq Scan",
+   "seq_scan_cost": 28334.01,
+   "index_only_cost": 42288.44
+  }
+ ]
+}

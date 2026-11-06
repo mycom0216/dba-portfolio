@@ -1,0 +1,63 @@
+{
+ "Q1": {
+  "ms": 58.0,
+  "min": 56.35,
+  "max": 59.23,
+  "scans": [
+   "Seq Scan on donations"
+  ],
+  "buffers": 8337,
+  "result": "1423|10000\n23|7340\n1660|6200\n43|6080\n220|6080\n662|6020\n155|6010\n251|6000\n675|6000\n2022|6000",
+  "plan": "Limit  (cost=18575.29..18575.31 rows=10 width=16) (actual time=55.550..55.602 rows=10 loops=1)\n  Buffers: shared hit=8337\n  ->  Sort  (cost=18575.29..18627.83 rows=21017 width=16) (actual time=55.546..55.596 rows=10 loops=1)\n        Sort Key: (sum(points)) DESC, broadcast_id\n        Sort Method: top-N heapsort  Memory: 25kB\n        Buffers: shared hit=8337\n        ->  Finalize HashAggregate  (cost=17910.95..18121.12 rows=21017 width=16) (actual time=52.883..54.605 rows=19476 loops=1)\n              Group Key: broadcast_id\n              Batches: 1  Memory Usage: 2833kB\n              Buffers: shared hit=8334\n              ->  Gather  (cost=15635.71..17807.53 rows=20684 width=16) (actual time=46.639..49.574 rows=21106 loops=1)\n                    Workers Planned: 2\n                    Workers Launched: 2\n                    Buffers: shared hit=8334\n                    ->  Partial HashAggregate  (cost=14635.71..14739.13 rows=10342 width=16) (actual time=23.075..23.787 rows=7035 loops=3)\n                          Group Key: broadcast_id\n                          Batches: 1  Memory Usage: 1425kB\n                          Buffers: shared hit=8334\n                          Worker 0:  Batches: 1  Memory Usage: 913kB\n                          Worker 1:  Batches: 1  Memory Usage: 657kB\n                          ->  Parallel Seq Scan on donations  (cost=0.00..14584.00 rows=10342 width=12) (actual time=0.015..21.397 rows=7719 loops=3)\n                                Filter: ((created_at >= '2026-10-01 00:00:00+00'::timestamp with time zone) AND (created_at < '2026-10-08 00:00:00+00'::timestamp with time zone))\n                                Rows Removed by Filter: 325614\n                                Buffers: shared hit=8334\nPlanning:\n  Buffers: shared hit=87\nPlanning Time: 1.562 ms\nExecution Time: 56.355 ms\n",
+  "desc": "최근 7일 후원 합계 상위 방송 (범위 조건 + 집계)"
+ },
+ "Q2": {
+  "ms": 95.63,
+  "min": 89.25,
+  "max": 135.59,
+  "scans": [
+   "Seq Scan on listens"
+  ],
+  "buffers": 25114,
+  "result": "1172951|6944|2026-09-23 21:41:31.070008+00\n144266|89490|2026-09-12 19:10:35.113673+00\n104516|6788|2026-08-30 01:48:21.028869+00\n2919059|9881|2026-08-30 00:45:10.683035+00\n350232|28127|2026-08-29 03:22:26.963427+00\n2853305|31748|2026-07-31 03:09:35.604354+00\n2239295|8043|2026-07-15 23:08:47.05243+00\n1992979|4943|2026-06-12 22:45:46.788216+00\n2864770|16025|2026-06-08 09:17:19.688096+00\n700274|11899|2026-05-24 17:04:46.74415+00\n2657447|50271|2026-05-22 14:51:17.717548+00\n1886265|98634|2026-05-06 23:55:35.093201+00\n1792592|32123|2026-04-21 05:17:15.3286+00\n1455180|17682|2026-04-06 00:28:49.849026+00\n116967|45213|2026-03-25 07:58:56.822153+00\n2079536|1082|2026-03-12 14:48:48.718158+00\n1499242|89440|2026-03-06 02:17:17.144492+00\n472083|24782|2026-02-14 08:09:40.1884+00\n2658221|12558|2026-02-02 00:43:50.856529+00",
+  "plan": "Limit  (cost=41625.12..41626.76 rows=14 width=24) (actual time=81.954..89.175 rows=19 loops=1)\n  Buffers: shared hit=25114\n  ->  Gather Merge  (cost=41625.12..41626.76 rows=14 width=24) (actual time=81.951..89.169 rows=19 loops=1)\n        Workers Planned: 2\n        Workers Launched: 2\n        Buffers: shared hit=25114\n        ->  Sort  (cost=40625.10..40625.12 rows=7 width=24) (actual time=54.601..54.602 rows=6 loops=3)\n              Sort Key: joined_at DESC\n              Sort Method: quicksort  Memory: 25kB\n              Buffers: shared hit=25114\n              Worker 0:  Sort Method: quicksort  Memory: 25kB\n              Worker 1:  Sort Method: quicksort  Memory: 25kB\n              ->  Parallel Seq Scan on listens  (cost=0.00..40625.00 rows=7 width=24) (actual time=8.237..54.526 rows=6 loops=3)\n                    Filter: (user_id = 12345)\n                    Rows Removed by Filter: 999994\n                    Buffers: shared hit=25000\nPlanning:\n  Buffers: shared hit=86\nPlanning Time: 1.228 ms\nExecution Time: 89.246 ms\n",
+  "desc": "유저의 최근 청취 이력 20건 (필터 + 정렬 + LIMIT)"
+ },
+ "Q3": {
+  "ms": 91.75,
+  "min": 88.49,
+  "max": 114.6,
+  "scans": [
+   "Seq Scan on listens"
+  ],
+  "buffers": 25000,
+  "result": "4",
+  "plan": "Finalize Aggregate  (cost=41625.22..41625.23 rows=1 width=8) (actual time=84.546..91.658 rows=1 loops=1)\n  Buffers: shared hit=25000\n  ->  Gather  (cost=41625.00..41625.21 rows=2 width=8) (actual time=84.408..91.651 rows=3 loops=1)\n        Workers Planned: 2\n        Workers Launched: 2\n        Buffers: shared hit=25000\n        ->  Partial Aggregate  (cost=40625.00..40625.01 rows=1 width=8) (actual time=59.084..59.085 rows=1 loops=3)\n              Buffers: shared hit=25000\n              ->  Parallel Seq Scan on listens  (cost=0.00..40625.00 rows=1 width=0) (actual time=42.790..59.072 rows=1 loops=3)\n                    Filter: ((left_at IS NULL) AND (broadcast_id = 1))\n                    Rows Removed by Filter: 999999\n                    Buffers: shared hit=25000\nPlanning:\n  Buffers: shared hit=66\nPlanning Time: 1.913 ms\nExecution Time: 91.747 ms\n",
+  "desc": "특정 방송의 현재 청취자 수 (NULL 조건, 선택도가 매우 낮음)"
+ },
+ "Q4": {
+  "ms": 84.56,
+  "min": 80.14,
+  "max": 87.39,
+  "scans": [
+   "Seq Scan on donations"
+  ],
+  "buffers": 8334,
+  "result": "3382",
+  "plan": "Finalize Aggregate  (cost=15589.42..15589.43 rows=1 width=8) (actual time=79.682..84.818 rows=1 loops=1)\n  Buffers: shared hit=8334\n  ->  Gather  (cost=15589.21..15589.42 rows=2 width=8) (actual time=79.485..84.812 rows=3 loops=1)\n        Workers Planned: 2\n        Workers Launched: 2\n        Buffers: shared hit=8334\n        ->  Partial Aggregate  (cost=14589.21..14589.22 rows=1 width=8) (actual time=50.870..50.871 rows=1 loops=3)\n              Buffers: shared hit=8334\n              ->  Parallel Seq Scan on donations  (cost=0.00..14584.00 rows=2083 width=0) (actual time=0.054..50.798 rows=1127 loops=3)\n                    Filter: (date_trunc('day'::text, created_at) = '2026-10-05 00:00:00+00'::timestamp with time zone)\n                    Rows Removed by Filter: 332206\n                    Buffers: shared hit=8334\nPlanning:\n  Buffers: shared hit=60\nPlanning Time: 1.240 ms\nExecution Time: 84.916 ms\n",
+  "desc": "하루치 후원 건수 - 컬럼을 함수로 감싼 조건 (non-sargable)"
+ },
+ "Q5": {
+  "ms": 50.72,
+  "min": 49.85,
+  "max": 52.15,
+  "scans": [
+   "Seq Scan on donations",
+   "Index Scan[users_pkey] on users"
+  ],
+  "buffers": 15244,
+  "result": "user_7e230522657ecdc50e4249581b861f8e|5000\nuser_d7e4cdde82a894b8f633e6d61a01ef15|5000\nuser_56f9b1360d583668d28db999db7decbb|5000\nuser_3b847a075d85556882ccb050e82ab665|5000\nuser_50ae0ce8c27842532dcd83c3678302bc|5000\nuser_97e166ec18b6d2e57c0a4ff98b919891|5000\nuser_c5677f71b1968b865a1570e182b7a18e|5000\nuser_518fca47d7abd2ff7ff736fd407d5ae9|5000\nuser_bf915dbefad769c34545cf288237bbb3|5000\nuser_d8cca0e2e9a91d7a54349b03f0532772|5000",
+  "plan": "Limit  (cost=17254.18..17254.20 rows=10 width=54) (actual time=48.030..52.008 rows=10 loops=1)\n  Buffers: shared hit=15244\n  ->  Sort  (cost=17254.18..17256.85 rows=1067 width=54) (actual time=48.027..52.004 rows=10 loops=1)\n        Sort Key: (sum(d.points)) DESC, u.user_id\n        Sort Method: top-N heapsort  Memory: 26kB\n        Buffers: shared hit=15244\n        ->  Finalize GroupAggregate  (cost=17105.49..17231.12 rows=1067 width=54) (actual time=47.044..51.834 rows=1716 loops=1)\n              Group Key: u.user_id\n              Buffers: shared hit=15244\n              ->  Gather Merge  (cost=17105.49..17216.00 rows=890 width=54) (actual time=47.037..51.510 rows=1718 loops=1)\n                    Workers Planned: 2\n                    Workers Launched: 2\n                    Buffers: shared hit=15244\n                    ->  Partial GroupAggregate  (cost=16105.46..16113.25 rows=445 width=54) (actual time=23.235..23.398 rows=573 loops=3)\n                          Group Key: u.user_id\n                          Buffers: shared hit=15244\n                          ->  Sort  (cost=16105.46..16106.57 rows=445 width=50) (actual time=23.228..23.259 rows=574 loops=3)\n                                Sort Key: u.user_id\n                                Sort Method: quicksort  Memory: 144kB\n                                Buffers: shared hit=15244\n                                Worker 0:  Sort Method: quicksort  Memory: 42kB\n                                Worker 1:  Sort Method: quicksort  Memory: 47kB\n                                ->  Nested Loop  (cost=0.42..16085.89 rows=445 width=50) (actual time=0.060..23.044 rows=574 loops=3)\n                                      Buffers: shared hit=15228\n                                      ->  Parallel Seq Scan on donations d  (cost=0.00..13542.33 rows=445 width=12) (actual time=0.036..20.272 rows=574 loops=3)\n                                            Filter: (broadcast_id = 1)\n                                            Rows Removed by Filter: 332759\n                                            Buffers: shared hit=8334\n                                      ->  Index Scan using users_pkey on users u  (cost=0.42..5.72 rows=1 width=46) (actual time=0.005..0.005 rows=1 loops=1723)\n                                            Index Cond: (user_id = d.sender_id)\n                                            Buffers: shared hit=6894\nPlanning:\n  Buffers: shared hit=162\nPlanning Time: 2.169 ms\nExecution Time: 52.120 ms\n",
+  "desc": "방송의 후원 상위 유저 10명 + 닉네임 (JOIN + 집계)"
+ }
+}

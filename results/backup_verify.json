@@ -1,0 +1,33 @@
+{
+ "ok": true,
+ "dump_seconds": 18.2,
+ "dump_mb": 120.1,
+ "restore_seconds": 16.1,
+ "tables": {
+  "users": {
+   "source": "200000|20000100000|8ccaae5b6487d7b444295080c8bbadb2",
+   "restored": "200000|20000100000|8ccaae5b6487d7b444295080c8bbadb2",
+   "match": true
+  },
+  "wallets": {
+   "source": "200000|10120300741",
+   "restored": "200000|10120300741",
+   "match": true
+  },
+  "listens": {
+   "source": "3000000|4500001500000|299802513486|2997661",
+   "restored": "3000000|4500001500000|299802513486|2997661",
+   "match": true
+  },
+  "donations": {
+   "source": "1000000|224000170|99945704856|35752326244",
+   "restored": "1000000|224000170|99945704856|35752326244",
+   "match": true
+  },
+  "indexes|constraints": {
+   "source": "10|16",
+   "restored": "10|16",
+   "match": true
+  }
+ }
+}

@@ -1,0 +1,33 @@
+{
+ "broadcasts": 20,
+ "N+1 (lazy loading)": {
+  "queries": 1146,
+  "ms": 350.4,
+  "rows": 1131
+ },
+ "selectinload": {
+  "queries": 5,
+  "ms": 26.0,
+  "rows": 1131,
+  "same_result_as_lazy": true
+ },
+ "joinedload": {
+  "queries": 1,
+  "ms": 17.1,
+  "rows": 1131,
+  "same_result_as_lazy": true
+ },
+ "filter_wrapped_in_function": {
+  "queries": 1,
+  "ms": 91.6,
+  "count": 3382,
+  "sql": "SELECT count(*) AS count_1  FROM donations  WHERE date_trunc(%(date_trunc_1)s::VARCHAR, donations.created_at) = %(date_trunc_2)s::TIMESTAMP WITH TIME ZONE"
+ },
+ "filter_range": {
+  "queries": 1,
+  "ms": 1.5,
+  "count": 3382,
+  "same_count": true,
+  "sql": "SELECT count(*) AS count_1  FROM donations  WHERE donations.created_at >= %(created_at_1)s::TIMESTAMP WITH TIME ZONE AND donations.created_at < %(created_at_2)s::TIMESTAMP WITH TIME ZONE"
+ }
+}

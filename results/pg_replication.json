@@ -1,0 +1,72 @@
+[
+ {
+  "mode": "비동기(기본)",
+  "basebackup_s": 10.4,
+  "commits_acked": 33900,
+  "tps": 5636,
+  "last_acked_id": 184285,
+  "rows_on_new_primary": 33900,
+  "lost_acked_commits": 0,
+  "lag_bytes_avg": 230,
+  "lag_bytes_max": 560,
+  "replay_lag_ms_avg": 0.2,
+  "replay_lag_ms_max": 0.5,
+  "failover_seconds(kill->writable)": 0.7
+ },
+ {
+  "mode": "비동기(기본)",
+  "basebackup_s": 2.3,
+  "commits_acked": 31480,
+  "tps": 5232,
+  "last_acked_id": 215790,
+  "rows_on_new_primary": 31480,
+  "lost_acked_commits": 0,
+  "lag_bytes_avg": 310,
+  "lag_bytes_max": 6328,
+  "replay_lag_ms_avg": 0.2,
+  "replay_lag_ms_max": 0.8,
+  "failover_seconds(kill->writable)": 0.7
+ },
+ {
+  "mode": "비동기(기본)",
+  "basebackup_s": 2.2,
+  "commits_acked": 33759,
+  "tps": 5617,
+  "last_acked_id": 249552,
+  "rows_on_new_primary": 33760,
+  "lost_acked_commits": 0,
+  "lag_bytes_avg": 366,
+  "lag_bytes_max": 8288,
+  "replay_lag_ms_avg": 0.2,
+  "replay_lag_ms_max": 0.7,
+  "failover_seconds(kill->writable)": 0.6
+ },
+ {
+  "mode": "동기(synchronous_standby_names)",
+  "basebackup_s": 2.1,
+  "commits_acked": 20679,
+  "tps": 3445,
+  "last_acked_id": 270265,
+  "rows_on_new_primary": 20679,
+  "lost_acked_commits": 0,
+  "lag_bytes_avg": 135,
+  "lag_bytes_max": 416,
+  "replay_lag_ms_avg": 0.1,
+  "replay_lag_ms_max": 0.5,
+  "failover_seconds(kill->writable)": 0.6
+ },
+ {
+  "mode": "동기(synchronous_standby_names)",
+  "basebackup_s": 7.0,
+  "commits_acked": 16320,
+  "tps": 2764,
+  "last_acked_id": 286598,
+  "rows_on_new_primary": 16321,
+  "lost_acked_commits": 0,
+  "lag_bytes_avg": 138,
+  "lag_bytes_max": 936,
+  "replay_lag_ms_avg": 0.2,
+  "replay_lag_ms_max": 0.7,
+  "failover_seconds(kill->writable)": 0.6
+ }
+]
